@@ -47,7 +47,7 @@ def main():
     col1, col2 = st.columns([4, 2])
 
     with col1:
-        text_input = st.text_area('Paste your text here (Shift + Enter)', height=550)
+        text_input = st.text_area('Paste your text here (Ctrl + Enter)', height=550)
 
     with col2:
 
