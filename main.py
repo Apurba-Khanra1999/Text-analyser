@@ -45,7 +45,7 @@ def add_punctuation(text, selected_punctuation):
     if not selected_punctuation:
         return text
     else:
-        return '\n'.join([line.strip() + ', ' for line in text.split('\n') if line.strip()])
+        return '\n'.join([line.strip() + ',' for line in text.split('\n') if line.strip()])
 
 
 def main():
