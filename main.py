@@ -30,6 +30,7 @@ def count_spaces(text):
     # Counting spaces directly
     return text.count(" ")
 
+
 def top_words(text, n=5):
     # Split text into words
     words = re.findall(r'\w+', text.lower())
@@ -38,6 +39,13 @@ def top_words(text, n=5):
     # Get the top n most common words
     top_n_words = word_freq.most_common(n)
     return top_n_words
+
+
+def add_punctuation(text, selected_punctuation):
+    if not selected_punctuation:
+        return text
+    else:
+        return '\n'.join([line.strip() + ', ' for line in text.split('\n') if line.strip()])
 
 
 def main():
@@ -50,8 +58,6 @@ def main():
         text_input = st.text_area('Paste your text here (Ctrl + Enter)', height=550)
 
     with col2:
-
-
         if text_input:
             top_words_count = st.slider("Select the number of top words to show", 1, 10, 5)
             total_characters = count_characters(text_input)
@@ -67,12 +73,13 @@ def main():
                 st.warning(f"Sentences: {total_sentences}")
                 st.error(f"Spaces: {total_spaces}")
 
-            top_n_words = top_words(text_input, top_words_count)
-            st.subheader(f"Frequently used {top_words_count} Words")
-            for word, frequency in top_n_words:
-                st.write(f"{word} : {frequency}")
+            punctuation_options = ['Comma (,)', 'Period (.)', 'Semicolon (;)', 'Exclamation (!)', 'Question Mark (?)']
+            selected_punctuation = st.multiselect("Select punctuation to add at the end of each line:", punctuation_options)
 
+            processed_text = add_punctuation(text_input, selected_punctuation)
 
+            st.subheader("Processed Text:")
+            st.text_area("Processed Text", value=processed_text, height=500)
 
 
 if __name__ == "__main__":
