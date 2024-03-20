@@ -128,7 +128,7 @@ def main(df):
 
     # Display the DataFrame
     st.write('### History:')
-    st.write(df,use_container_width=True)
+    st.write(df[::-1],use_container_width=True)
 
 
 if __name__ == '__main__':
