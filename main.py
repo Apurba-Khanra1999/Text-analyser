@@ -1,6 +1,19 @@
 import streamlit as st
+import pandas as pd
+import os
 import re
 from collections import Counter
+from datetime import datetime
+# Function to load existing DataFrame from file
+def load_data(file_path):
+    if os.path.exists(file_path):
+        return pd.read_csv(file_path)
+    else:
+        return pd.DataFrame(columns=['Input Text','Date and Time'])
+
+# Function to save DataFrame to file
+def save_data(df, file_path):
+    df.to_csv(file_path, index=False)
 
 st.set_page_config(
     page_title="Text Analyser",
@@ -51,18 +64,14 @@ def add_punctuation(text, add_comma):
 def find_and_replace(text, find_word, replace_word):
     return re.sub(r'\b{}\b'.format(find_word), replace_word, text)
 
-def main():
-    # st.header("Text Analyzer")
-    st.markdown("<h2 style='text-align: center;'>Text Analyser By Apurba</h2>", unsafe_allow_html=True)
 
+# Streamlit app
+def main(df):
+    st.markdown("<h2 style='text-align: center;'>Text Analyser By Apurba</h2>", unsafe_allow_html=True)
     col1, col2 = st.columns(2)
 
     with col1:
         text_input = st.text_area('Paste your text here (Ctrl + Enter)', height=400)
-
-        # lowercase_checkbox = st.checkbox("Lowercase all text")
-        # comma_checkbox = st.checkbox("Add comma at the end of each line")
-
         total_characters = count_characters(text_input)
         total_words = count_words(text_input)
         total_sentences = count_sentences(text_input)
@@ -84,8 +93,6 @@ def main():
         st.subheader(f"Frequently used {top_words_count} Words")
         for word, frequency in top_n_words:
             st.write(f"{word} : {frequency}")
-
-
     with col2:
         if text_input:
             lowerCaseCol, commaCol = st.columns(2)
@@ -112,8 +119,22 @@ def main():
             st.text_area("Processed Text", value=processed_text, height=500)
 
 
-if __name__ == "__main__":
-    main()
+    if text_input:
+        current_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        new_df = pd.DataFrame({'Input Text': [text_input],'Date and Time': [current_time]})
+        df = pd.concat([df, new_df], ignore_index=True)
+        save_data(df, file_path)
+        st.success('Text saved successfully!')
+
+    # Display the DataFrame
+    st.write('### History:')
+    st.write(df,use_container_width=True)
+
+
+if __name__ == '__main__':
+    file_path = 'saved_text.csv'
+    df = load_data(file_path)
+    main(df)
 
 hide_streamlit_style = """
             <style>
