@@ -88,9 +88,6 @@ def main(df):
         with col4:
             st.warning(f"Lines: {line_count}")
             st.error(f"Spaces: {total_spaces}")
-        st.markdown(
-            '<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3685660158116656"crossorigin="anonymous"></script>')
-
         st.markdown("<h4 style='text-align: left;'>Select the number of Top Words</h4>", unsafe_allow_html=True)
 
         top_words_count = st.slider("", 1, 10, 5)
