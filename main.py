@@ -123,6 +123,7 @@ def main(df):
         current_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         new_df = pd.DataFrame({'Input Text': [text_input],'Date and Time': [current_time]})
         df = pd.concat([df, new_df], ignore_index=True)
+        df = df.tail(10)
         save_data(df, file_path)
         st.success('Text saved successfully!')
 
