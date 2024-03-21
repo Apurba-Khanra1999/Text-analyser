@@ -4,6 +4,8 @@ import os
 import re
 from collections import Counter
 from datetime import datetime
+import streamlit.components.v1 as components
+
 # Function to load existing DataFrame from file
 def load_data(file_path):
     if os.path.exists(file_path):
@@ -127,9 +129,21 @@ def main(df):
         save_data(df, file_path)
         st.success('Text saved successfully!')
 
+    #------------------------------------------------------------------------------------------
+    # Define the perplexity URL
+    perplexity_url = "https://www.perplexity.ai/"
+
+    # Create a checkbox for perplexity
+    show_perplexity = st.checkbox("Show Perplexity")
+
+    # Display the perplexity URL in an iframe if checkbox is selected
+    if show_perplexity:
+        st.text("⚠️Some websites might not load due to security reasons")
+        components.iframe(perplexity_url, scrolling=True, height=800)
+
     # Display the DataFrame
     st.write('### History:')
-    st.write(df[::-1],use_container_width=True)
+    st.write(df[::-1], use_container_width=True)
 
 
 if __name__ == '__main__':
