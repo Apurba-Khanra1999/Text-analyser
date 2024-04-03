@@ -88,6 +88,7 @@ def main(df):
         with col4:
             st.warning(f"Lines: {line_count}")
             st.error(f"Spaces: {total_spaces}")
+
         st.markdown("<h4 style='text-align: left;'>Select the number of Top Words</h4>", unsafe_allow_html=True)
 
         top_words_count = st.slider("", 1, 10, 5)
@@ -125,22 +126,11 @@ def main(df):
         current_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         new_df = pd.DataFrame({'Input Text': [text_input],'Date and Time': [current_time]})
         df = pd.concat([df, new_df], ignore_index=True)
-        df = df.tail(10)
+        df = df.tail(25)
         save_data(df, file_path)
         st.success('Text saved successfully!')
 
-    #------------------------------------------------------------------------------------------
-    # Define the perplexity URL
-    perplexity_url = "https://www.perplexity.ai/"
-
-    # Create a checkbox for perplexity
-    show_perplexity = st.checkbox("Show Perplexity")
-
-    # Display the perplexity URL in an iframe if checkbox is selected
-    if show_perplexity:
-        st.text("⚠️Some websites might not load due to security reasons")
-        components.iframe(perplexity_url, scrolling=True, height=800)
-
+    #-----------------------------------------------------------------------------------------
     # Display the DataFrame
     st.write('### History:')
     st.write(df[::-1], use_container_width=True)
