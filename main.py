@@ -130,10 +130,15 @@ def main(df):
         save_data(df, file_path)
         st.success('Text saved successfully!')
 
+        # Filter DataFrame by date
+    date_input = st.date_input("Select a date:")
+    selected_date = date_input.strftime('%Y-%m-%d')
+    filtered_df = df[df['Date and Time'].str.startswith(selected_date)]
+
     #-----------------------------------------------------------------------------------------
     # Display the DataFrame
     st.write('### History:')
-    st.write(df[::-1], use_container_width=True)
+    st.write(filtered_df[::-1], use_container_width=True)
 
 
 if __name__ == '__main__':
