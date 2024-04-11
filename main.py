@@ -1,3 +1,4 @@
+import pyperclip
 import streamlit as st
 import pandas as pd
 import os
@@ -11,7 +12,7 @@ def load_data(file_path):
     if os.path.exists(file_path):
         return pd.read_csv(file_path)
     else:
-        return pd.DataFrame(columns=['Input Text','Date and Time'])
+        return pd.DataFrame(columns=['Processed Text','Date and Time'])
 
 # Function to save DataFrame to file
 def save_data(df, file_path):
@@ -66,6 +67,8 @@ def add_punctuation(text, add_comma):
 def find_and_replace(text, find_word, replace_word):
     return re.sub(r'\b{}\b'.format(find_word), replace_word, text)
 
+# Function to include FontAwesome icon in HTML
+
 
 # Streamlit app
 def main(df):
@@ -91,7 +94,7 @@ def main(df):
 
         st.markdown("<h4 style='text-align: left;'>Select the number of Top Words</h4>", unsafe_allow_html=True)
 
-        top_words_count = st.slider("", 1, 10, 5)
+        top_words_count = st.slider("", 1, 10, 3)
         top_n_words = top_words(text_input, top_words_count)
         st.subheader(f"Frequently used {top_words_count} Words")
         for word, frequency in top_n_words:
@@ -114,31 +117,53 @@ def main(df):
                 replace_word = st.text_input("Replace it with")
             st.divider()
             processed_text = text_input
+            col7, spacer, col8 = st.columns([4, 1, 3])
+            with col7:
+                st.subheader("Processed Text")
+            with col8:
+                # Add a button to copy processed text to clipboard
+                if st.button("📋Copy to Clipboard"):
+                    pyperclip.copy(processed_text)
+                    st.success("Processed text copied to clipboard!")
             if comma_checkbox:
                 processed_text = add_punctuation(processed_text, comma_checkbox)
 
-            # st.subheader("Processed Text:")
+
             processed_text = find_and_replace(processed_text, find_word, replace_word)
-            st.text_area("Processed Text", value=processed_text, height=500)
+            st.text_area("", value=processed_text, height=500)
+
+
 
 
     if text_input:
         current_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-        new_df = pd.DataFrame({'Input Text': [text_input],'Date and Time': [current_time]})
+        new_df = pd.DataFrame({'Processed Text': [text_input],'Date and Time': [current_time]})
         df = pd.concat([df, new_df], ignore_index=True)
         # df = df.tail(25)
         save_data(df, file_path)
-        st.success('Text saved successfully!')
+
 
         # Filter DataFrame by date
-    date_input = st.date_input("Select a date:")
+
+    date_input = st.date_input("Select a date")
     selected_date = date_input.strftime('%Y-%m-%d')
     filtered_df = df[df['Date and Time'].str.startswith(selected_date)]
 
     #-----------------------------------------------------------------------------------------
     # Display the DataFrame
     st.write('### History:')
-    st.write(filtered_df[::-1], use_container_width=True)
+    history_df = filtered_df[::-1]  # Get the history DataFrame
+    st.dataframe(history_df, width=1920)
+    # history_table = st.write(filtered_df[::-1], use_container_width=True)
+
+    # # Add a button to copy the processed text from the history table to clipboard
+    # selected_text_index = st.number_input("Select the row index to copy processed text:", value=0, min_value=0,
+    #                                       max_value=len(filtered_df) - 1, step=1)
+    # selected_processed_text = filtered_df.iloc[selected_text_index]['Processed Text']
+    # if st.button("Copy Processed Text"):
+    #     # Copy the processed text to clipboard
+    #     pyperclip.copy(selected_processed_text)
+    #     st.success("Processed text copied to clipboard!")
 
 
 if __name__ == '__main__':
