@@ -130,7 +130,7 @@ def main(df):
 
 
             processed_text = find_and_replace(processed_text, find_word, replace_word)
-            st.text_area("", value=processed_text, height=500)
+            st.text_area("Processed Data", value=processed_text, height=500)
 
 
 
