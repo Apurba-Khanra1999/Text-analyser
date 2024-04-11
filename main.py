@@ -117,7 +117,7 @@ def main(df):
                 replace_word = st.text_input("Replace it with")
             st.divider()
             processed_text = text_input
-            col7, spacer, col8 = st.columns([4, 1, 3])
+            col7,  col8 = st.columns(2)
             with col7:
                 st.subheader("Processed Text")
             with col8:
@@ -153,7 +153,7 @@ def main(df):
     # Display the DataFrame
     st.write('### History:')
     history_df = filtered_df[::-1]  # Get the history DataFrame
-    st.dataframe(history_df, width=1920)
+    st.dataframe(history_df, width=1600)
     # history_table = st.write(filtered_df[::-1], use_container_width=True)
 
     # # Add a button to copy the processed text from the history table to clipboard
