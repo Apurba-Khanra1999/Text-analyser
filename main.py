@@ -163,7 +163,8 @@ def main(df):
     #     # Copy the processed text to clipboard
     #     pyperclip.copy(selected_processed_text)
     #     st.success("Processed text copied to clipboard!")
-    st.sidebar.markdown("<h1 style='text-align: center; font-size: 35px'>By Apurba</h1>", unsafe_allow_html=True)
+    st.sidebar.divider()
+    st.sidebar.subheader("Crafted with 💖 by Apurba")
 
 
 
