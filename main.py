@@ -72,65 +72,64 @@ def find_and_replace(text, find_word, replace_word):
 
 # Streamlit app
 def main(df):
-    st.markdown("<h2 style='text-align: center;'>Text Analyser By Apurba</h2>", unsafe_allow_html=True)
+
+    st.sidebar.markdown("<h1 style='text-align: center; font-size: 40px'>Text Analyser</h1>", unsafe_allow_html=True)
     col1, col2 = st.columns(2)
 
     with col1:
-        text_input = st.text_area('Paste your text here (Ctrl + Enter)', height=400)
+        st.subheader('Playground')
+        text_input = st.text_area('Paste your text here (Ctrl + Enter)', height=500)
         total_characters = count_characters(text_input)
         total_words = count_words(text_input)
         total_sentences = count_sentences(text_input)
         total_spaces = count_spaces(text_input)
         line_count = count_lines(text_input)
 
-        col3, col4 = st.columns(2)
-        with col3:
-            st.success(f"Characters : {total_characters}")
-            st.info(f"Words: {total_words}")
-            st.success(f"Sentences : {total_sentences}")
-        with col4:
-            st.warning(f"Lines: {line_count}")
-            st.error(f"Spaces: {total_spaces}")
+        with st.sidebar:
+            col3, col4 = st.columns(2)
+            with col3:
+                st.info(f"Words: {total_words}")
+                st.warning(f"Sentences : {total_sentences}")
+            st.success(f"Characters: {total_characters}")
+            with col4:
+                st.success(f"Lines: {line_count}")
+                st.error(f"Spaces: {total_spaces}")
 
-        st.markdown("<h4 style='text-align: left;'>Select the number of Top Words</h4>", unsafe_allow_html=True)
+    with st.sidebar:
+        st.divider()
+        if text_input:
+            lowerCaseCol, commaCol = st.columns(2)
+            with lowerCaseCol:
+                lowercase_checkbox = st.checkbox("Lowercase")
+            with commaCol:
+                comma_checkbox = st.checkbox("Add comma")
+            if lowercase_checkbox:
+                text_input = text_input.lower()
 
-        top_words_count = st.slider("", 1, 10, 3)
+            st.subheader('Find and Replace')
+            col5, col6 = st.columns(2)
+            with col5:
+                find_word = st.text_input("Find Word")
+            with col6:
+                replace_word = st.text_input("Replace it with")
+            processed_text = text_input
+
+            if comma_checkbox:
+                processed_text = add_punctuation(processed_text, comma_checkbox)
+
+            processed_text = find_and_replace(processed_text, find_word, replace_word)
+        st.divider()
+        top_words_count = st.slider("Select the number of Top Words", 1, 10, 3)
         top_n_words = top_words(text_input, top_words_count)
         st.subheader(f"Frequently used {top_words_count} Words")
         for word, frequency in top_n_words:
             st.write(f"{word} : {frequency}")
     with col2:
         if text_input:
-            lowerCaseCol, commaCol = st.columns(2)
-            with lowerCaseCol:
-                lowercase_checkbox = st.checkbox("Lowercase all text")
-            with commaCol:
-                comma_checkbox = st.checkbox("Add comma at the end of each line")
-            if lowercase_checkbox:
-                text_input = text_input.lower()
-
-
-            col5, col6 = st.columns(2)
-            with col5:
-                find_word = st.text_input("Find Word")
-            with col6:
-                replace_word = st.text_input("Replace it with")
-            st.divider()
-            processed_text = text_input
-            col7,  col8 = st.columns(2)
-            with col7:
-                st.subheader("Processed Text")
-            with col8:
-                # Add a button to copy processed text to clipboard
-                if st.button("📋Copy to Clipboard"):
-                    pyperclip.copy(processed_text)
-                    st.success("Processed text copied to clipboard!")
-            if comma_checkbox:
-                processed_text = add_punctuation(processed_text, comma_checkbox)
-
-
             processed_text = find_and_replace(processed_text, find_word, replace_word)
-            st.text_area("Processed Data", value=processed_text, height=500)
+            # st.text_area("Processed Data", value=processed_text, height=500)
+            st.subheader('Processed Text')
+            st.code(processed_text, language="None", line_numbers=True)
 
 
 
@@ -164,6 +163,8 @@ def main(df):
     #     # Copy the processed text to clipboard
     #     pyperclip.copy(selected_processed_text)
     #     st.success("Processed text copied to clipboard!")
+    st.sidebar.markdown("<h1 style='text-align: center; font-size: 35px'>By Apurba</h1>", unsafe_allow_html=True)
+
 
 
 if __name__ == '__main__':
