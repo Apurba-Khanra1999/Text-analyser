@@ -72,8 +72,20 @@ def find_and_replace(text, find_word, replace_word):
 
 # Streamlit app
 def main(df):
+    st.sidebar.subheader("Crafted with 💖 by Apurba")
+    st.sidebar.markdown("<h1 style='text-align: center; font-size: 40px'>Smart Text</h1>", unsafe_allow_html=True)
+    lowerCaseCol, commaCol = st.columns(2)
+    with lowerCaseCol:
+        lowercase_checkbox = st.checkbox("All text to Lowercase")
+    with commaCol:
+        comma_checkbox = st.checkbox("Comma at end of each line")
 
-    st.sidebar.markdown("<h1 style='text-align: center; font-size: 40px'>Text Analyser</h1>", unsafe_allow_html=True)
+    # st.markdown("<h3 style='text-align: center; font-size: 22px'>Find and Replace</h3>", unsafe_allow_html=True)
+    col5, col6 = st.columns(2)
+    with col5:
+        find_word = st.text_input("Find Word")
+    with col6:
+        replace_word = st.text_input("Replace it with")
     col1, col2 = st.columns([1,2])
 
     with col1:
@@ -95,43 +107,31 @@ def main(df):
                 st.success(f"Lines: {line_count}")
                 st.error(f"Spaces: {total_spaces}")
 
-    with st.sidebar:
-        st.divider()
-        if text_input:
-            lowerCaseCol, commaCol = st.columns(2)
-            with lowerCaseCol:
-                lowercase_checkbox = st.checkbox("Lowercase")
-            with commaCol:
-                comma_checkbox = st.checkbox("Add comma")
-            if lowercase_checkbox:
-                text_input = text_input.lower()
+    st.divider()
+    if text_input:
 
-            st.subheader('Find and Replace')
-            col5, col6 = st.columns(2)
-            with col5:
-                find_word = st.text_input("Find Word")
-            with col6:
-                replace_word = st.text_input("Replace it with")
-            processed_text = text_input
+        if lowercase_checkbox:
+            text_input = text_input.lower()
 
-            if comma_checkbox:
-                processed_text = add_punctuation(processed_text, comma_checkbox)
+        processed_text = text_input
 
-            processed_text = find_and_replace(processed_text, find_word, replace_word)
-        st.divider()
-        top_words_count = st.slider("Select the number of Top Words", 1, 10, 3)
-        top_n_words = top_words(text_input, top_words_count)
-        st.subheader(f"Frequently used {top_words_count} Words")
-        for word, frequency in top_n_words:
-            st.write(f"{word} : {frequency}")
+        if comma_checkbox:
+            processed_text = add_punctuation(processed_text, comma_checkbox)
+
+        processed_text = find_and_replace(processed_text, find_word, replace_word)
+        with st.sidebar:
+            st.divider()
+            top_words_count = st.slider("Select the number of Top Words", 1, 10, 3)
+            top_n_words = top_words(text_input, top_words_count)
+            st.subheader(f"Frequently used {top_words_count} Words")
+            for word, frequency in top_n_words:
+                st.write(f"{word} : {frequency}")
     with col2:
         if text_input:
             processed_text = find_and_replace(processed_text, find_word, replace_word)
             # st.text_area("Processed Data", value=processed_text, height=500)
             st.subheader('Processed Text')
             st.code(processed_text, language="None", line_numbers=True)
-
-
 
 
     if text_input:
@@ -163,8 +163,6 @@ def main(df):
     #     # Copy the processed text to clipboard
     #     pyperclip.copy(selected_processed_text)
     #     st.success("Processed text copied to clipboard!")
-    st.sidebar.divider()
-    st.sidebar.subheader("Crafted with 💖 by Apurba")
 
 
 
