@@ -74,7 +74,7 @@ def find_and_replace(text, find_word, replace_word):
 def main(df):
 
     st.sidebar.markdown("<h1 style='text-align: center; font-size: 40px'>Text Analyser</h1>", unsafe_allow_html=True)
-    col1, col2 = st.columns(2)
+    col1, col2 = st.columns([1,2])
 
     with col1:
         st.subheader('Playground')
@@ -136,7 +136,7 @@ def main(df):
 
     if text_input:
         current_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-        new_df = pd.DataFrame({'Processed Text': [text_input],'Date and Time': [current_time]})
+        new_df = pd.DataFrame({'Processed Text': [processed_text],'Date and Time': [current_time]})
         df = pd.concat([df, new_df], ignore_index=True)
         # df = df.tail(25)
         save_data(df, file_path)
