@@ -5,6 +5,7 @@ import os
 import re
 from collections import Counter
 from datetime import datetime
+import textwrap as tw
 import streamlit.components.v1 as components
 
 # Function to load existing DataFrame from file
@@ -108,17 +109,16 @@ def main(df):
                 st.error(f"Spaces: {total_spaces}")
 
     st.divider()
+    processed_text = text_input
     if text_input:
-
+        processed_text = find_and_replace(processed_text, find_word, replace_word)
         if lowercase_checkbox:
-            text_input = text_input.lower()
-
-        processed_text = text_input
+            processed_text = processed_text.lower()
 
         if comma_checkbox:
             processed_text = add_punctuation(processed_text, comma_checkbox)
 
-        processed_text = find_and_replace(processed_text, find_word, replace_word)
+
         with st.sidebar:
             st.divider()
             top_words_count = st.slider("Select the number of Top Words", 1, 10, 3)
@@ -128,10 +128,11 @@ def main(df):
                 st.write(f"{word} : {frequency}")
     with col2:
         if text_input:
-            processed_text = find_and_replace(processed_text, find_word, replace_word)
+            # processed_text = find_and_replace(processed_text, find_word, replace_word)
             # st.text_area("Processed Data", value=processed_text, height=500)
             st.subheader('Processed Text')
             st.code(processed_text, language="None", line_numbers=True)
+            # st.code("\n".join(tw.wrap(processed_text)), language="None", line_numbers=True)
 
 
     if text_input:
@@ -155,16 +156,6 @@ def main(df):
     st.dataframe(history_df, width=1600)
     # history_table = st.write(filtered_df[::-1], use_container_width=True)
 
-    # # Add a button to copy the processed text from the history table to clipboard
-    # selected_text_index = st.number_input("Select the row index to copy processed text:", value=0, min_value=0,
-    #                                       max_value=len(filtered_df) - 1, step=1)
-    # selected_processed_text = filtered_df.iloc[selected_text_index]['Processed Text']
-    # if st.button("Copy Processed Text"):
-    #     # Copy the processed text to clipboard
-    #     pyperclip.copy(selected_processed_text)
-    #     st.success("Processed text copied to clipboard!")
-
-
 
 if __name__ == '__main__':
     file_path = 'saved_text.csv'
@@ -179,3 +170,13 @@ hide_streamlit_style = """
             </style>
             """
 st.markdown(hide_streamlit_style, unsafe_allow_html=True)
+
+css = '''
+<style>
+    [data-testid="ScrollToBottomContainer"] {
+        overflow: hidden;
+    }
+</style>
+'''
+
+st.markdown(css, unsafe_allow_html=True)
