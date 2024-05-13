@@ -8,20 +8,9 @@ from datetime import datetime
 import textwrap as tw
 import streamlit.components.v1 as components
 
-# Function to load existing DataFrame from file
-def load_data(file_path):
-    if os.path.exists(file_path):
-        return pd.read_csv(file_path)
-    else:
-        return pd.DataFrame(columns=['Processed Text','Date and Time'])
-
-# Function to save DataFrame to file
-def save_data(df, file_path):
-    df.to_csv(file_path, index=False)
-
 st.set_page_config(
-    page_title="Text Analyser",
-    page_icon="🪄",
+    page_title="Easy SEO",
+    page_icon="🧿",
     layout="wide",
 )
 
@@ -72,7 +61,7 @@ def find_and_replace(text, find_word, replace_word):
 
 
 # Streamlit app
-def main(df):
+def main():
     st.sidebar.subheader("Crafted with 💖 by Apurba")
     st.sidebar.markdown("<h1 style='text-align: center; font-size: 40px'>Smart Text</h1>", unsafe_allow_html=True)
     lowerCaseCol, commaCol = st.columns(2)
@@ -135,32 +124,11 @@ def main(df):
             # st.code("\n".join(tw.wrap(processed_text)), language="None", line_numbers=True)
 
 
-    if text_input:
-        current_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-        new_df = pd.DataFrame({'Processed Text': [processed_text],'Date and Time': [current_time]})
-        df = pd.concat([df, new_df], ignore_index=True)
-        # df = df.tail(25)
-        save_data(df, file_path)
 
-
-        # Filter DataFrame by date
-
-    date_input = st.date_input("Select a date")
-    selected_date = date_input.strftime('%Y-%m-%d')
-    filtered_df = df[df['Date and Time'].str.startswith(selected_date)]
-
-    #-----------------------------------------------------------------------------------------
-    # Display the DataFrame
-    st.write('### History:')
-    history_df = filtered_df[::-1]  # Get the history DataFrame
-    st.dataframe(history_df, width=1600)
-    # history_table = st.write(filtered_df[::-1], use_container_width=True)
 
 
 if __name__ == '__main__':
-    file_path = 'saved_text.csv'
-    df = load_data(file_path)
-    main(df)
+    main()
 
 hide_streamlit_style = """
             <style>
