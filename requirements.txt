@@ -1,3 +1,4 @@
 streamlit
 pyperclip
 sumy
+google-generativeai
