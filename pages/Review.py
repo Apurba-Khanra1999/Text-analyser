@@ -10,7 +10,7 @@ st.set_page_config(
 st.page_link("main.py", label="H O M E", icon="🏡")
 st.divider()
 
-genai.configure(api_key="AIzaSyBd8NKxdnGAY7vu7qrNqNnOZaVj0Reh6eU")
+genai.configure(api_key="AIzaSyABk1L3eNxv4D9SjtFLcjw3nqKv1Nd19-U")
 # AIzaSyABk1L3eNxv4D9SjtFLcjw3nqKv1Nd19-U             -- SAGNIK
 # AIzaSyDXtaS6UDtw5rJo2sk9gUk_I59kcp7TUS0             -- ME
 # AIzaSyBd8NKxdnGAY7vu7qrNqNnOZaVj0Reh6eU             -- Sukanta
