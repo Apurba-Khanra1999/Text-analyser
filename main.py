@@ -10,7 +10,7 @@ st.set_page_config(
 )
 st.logo(icon_image="logo.png", image="logo.png")
 st.title('Our Products')
-col1, col2 =st.columns(2)
+col1, col2, col3 =st.columns(3)
 with col1:
     with st.container(border=True):
         left, right = st.columns([1,4])
@@ -30,6 +30,17 @@ with col2:
             st.write('AI generated reviews for colleges using College Name')
         if st.button("Give Review"):
             st.switch_page("pages/Review.py")
+with col3:
+    with st.container(border=True):
+        left, right = st.columns([1,4])
+        with left:
+            st.image('generate.png', width=30)
+        with right:
+            st.write('Generate Blogs based on Keywords.')
+        if st.button("Generate"):
+            st.switch_page("pages/Write Blogs.py")
+
+
 
 st.divider()
 st.markdown('Feel free to suggest an edit 📝', unsafe_allow_html=True)
