@@ -11,6 +11,7 @@ st.set_page_config(
 st.logo(icon_image="logo.png", image="logo.png")
 st.title('Our Products')
 col1, col2, col3 =st.columns(3)
+col4, col5, col6 =st.columns(3)
 with col1:
     with st.container(border=True):
         left, right = st.columns([1,4])
@@ -39,6 +40,25 @@ with col3:
             st.write('Generate Blogs based on Keywords.')
         if st.button("Generate"):
             st.switch_page("pages/Write Blogs.py")
+with col4:
+    with st.container(border=True):
+        left, right = st.columns([1,4])
+        with left:
+            st.image('seo.png', width=30)
+        with right:
+            st.write('Generate Meta Title, Description and Keywords.')
+        if st.button("Get Data"):
+            st.switch_page("pages/College SEO Generator.py")
+
+with col5:
+    with st.container(border=True):
+        left, right = st.columns([1,4])
+        with left:
+            st.image('google.png', width=30)
+        with right:
+            st.write('Generate Google SEO Serp Preview with validation.')
+        if st.button("Preview"):
+            st.switch_page("pages/SEO Google Serp.py")
 
 
 
