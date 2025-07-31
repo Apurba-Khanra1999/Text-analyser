@@ -10,7 +10,7 @@ st.set_page_config(
 st.page_link("main.py", label="H O M E", icon="🏡")
 st.divider()
 
-genai.configure(api_key="AIzaSyDQkwxfNRUmlO8t-QB0lbxDbuMebJdIobY")
+genai.configure(api_key="AIzaSyDrDBXTRPSOub-a32MenJvUwBWQJLd1zbE")
 # AIzaSyABk1L3eNxv4D9SjtFLcjw3nqKv1Nd19-U             -- SAGNIK
 # AIzaSyDXtaS6UDtw5rJo2sk9gUk_I59kcp7TUS0             -- ME
 # AIzaSyBd8NKxdnGAY7vu7qrNqNnOZaVj0Reh6eU             -- Sukanta
@@ -20,11 +20,11 @@ generation_config = {
   "temperature": 1,
   "top_p": 0.95,
   "top_k": 64,
-  "max_output_tokens": 8192,
+  "max_output_tokens": 1000,
 }
 
 model = genai.GenerativeModel(
-  model_name="gemini-1.5-flash",
+  model_name="gemini-2.0-flash",
   generation_config=generation_config,
 )
 collegeName = st.text_input('Enter a College Name', placeholder='Narula Institutue Of Technology')
